@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
 const authRoutes = require("./routes/authRoutes");
+const organisationRoutes = require("./routes/organisationRoutes");
+const pollRoutes = require("./routes/pollRoutes");
 
 dotenv.config();
 
@@ -30,7 +32,6 @@ app.use(
       ],
       connectSrc: [
         "'self'",
-        "http://localhost:5001",
         "https://localhost:5001",
       ],
     },
@@ -63,6 +64,10 @@ app.get('/test', (req, res) => {
 app.use("/api/auth", authRoutes);
 
 
+app.use("/api/organisations", organisationRoutes);
+
+
+app.use("/api/polls", pollRoutes);
 
 
 const { protect } = require("./middleware/authMiddleware");

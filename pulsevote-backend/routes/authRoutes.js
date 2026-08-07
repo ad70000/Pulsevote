@@ -24,6 +24,7 @@ const passwordValidator = body("password")
   .trim()
   .escape();
 
+const { protect } = require("../middleware/authMiddleware");
 
 const { registerUser, registerManager, registerAdmin, login } = require("../controllers/authController");
 
