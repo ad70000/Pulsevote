@@ -9,6 +9,8 @@ const { body } = require("express-validator");
 console.log("R3 Creating router...");
 const router = express.Router();
 
+const { registerLimiter, loginLimiter } = require("../middleware/rateLimiter");
+
 const emailValidator = body("email")
     .isEmail()
     .withMessage("Email must be valid")
@@ -30,10 +32,11 @@ const { registerUser, registerManager, registerAdmin, login } = require("../cont
 
 const { requireRole } = require("../middleware/roleMiddleware.js");
 
-router.post("/register-user", [emailValidator, passwordValidator], registerUser);
-router.post("/register-manager", protect, requireRole("admin"), [emailValidator, passwordValidator], registerManager);
-router.post("/register-admin", [emailValidator, passwordValidator], registerAdmin);
-router.post("/login", [emailValidator, body("password").notEmpty().trim().escape()], login);
+router.post("/register-user", registerLimiter, [emailValidator, passwordValidator], registerUser);
+router.post("/register-manager", protect, requireRole("admin"), registerLimiter, [emailValidator, passwordValidator], registerManager);
+router.post("/register-admin", registerLimiter, [emailValidator, passwordValidator], registerAdmin);
+
+router.post("/login", loginLimiter, [emailValidator, body("password").notEmpty().trim().escape()], login);
 
 
 console.log("R4 Exporting router");
