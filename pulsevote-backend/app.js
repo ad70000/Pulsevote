@@ -61,6 +61,12 @@ app.get('/test', (req, res) => {
     });
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    ok: true,
+    ts: Date.now()
+  });
+});
 
 
 app.use("/api/auth", authRoutes);
