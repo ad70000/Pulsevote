@@ -29,7 +29,8 @@ clearDatabase().catch(async (err) => {
   console.error(err.message);
   try {
     await mongoose.disconnect();
-  } catch {
+  } catch { 
+    // to do
   }
   process.exit(1);
 });
