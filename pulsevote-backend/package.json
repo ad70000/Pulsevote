@@ -7,6 +7,7 @@
   "start": "node server.js",
   "dev": "npx nodemon server.js",
   "test": "jest --passWithNoTests",
+  "test:coverage": "jest --coverage --passWithNoTests",
   "lint": "eslint .",
   "db:clear": "node scripts/clearDatabase.js"
 },
