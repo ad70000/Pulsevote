@@ -16,9 +16,9 @@ jobs:
 
     steps:
       - name: Check out repository
-  uses: actions/checkout@v4
-  with:
-    fetch-depth: 0
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,18 +34,18 @@ jobs:
         run: npm run lint
 
       - name: Run unit tests with coverage
-  run: npm run test:coverage
+        run: npm run test:coverage
 
       - name: Analyse backend with SonarQube Cloud
-  uses: SonarSource/sonarqube-scan-action@v8
-  env:
-    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  with:
-    projectBaseDir: pulsevote-backend
-    args: >
-      -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-      -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
-      -Dsonar.qualitygate.wait=true
+        uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: pulsevote-backend
+          args: >
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.qualitygate.wait=true
 
       - name: Clear CI test database
         env:
@@ -75,15 +75,19 @@ jobs:
           for i in {1..30}; do
             STATUS=$(docker inspect --format='{{.State.Health.Status}}' pulsevote-api 2>/dev/null || echo starting)
             echo "API health status: $STATUS"
+
             if [ "$STATUS" = "healthy" ]; then
               exit 0
             fi
+
             if [ "$(docker inspect --format='{{.State.Status}}' pulsevote-api 2>/dev/null)" = "exited" ]; then
               docker logs pulsevote-api
               exit 1
             fi
+
             sleep 2
           done
+
           docker logs pulsevote-api
           exit 1
 
