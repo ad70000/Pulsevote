@@ -43,8 +43,8 @@ jobs:
         with:
           projectBaseDir: pulsevote-backend
           args: >
-            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
             -Dsonar.qualitygate.wait=true
 
       - name: Clear CI test database
@@ -115,6 +115,7 @@ jobs:
         run: |
           docker rm -f pulsevote-api 2>/dev/null || true
           docker network rm pulsevote-ci 2>/dev/null || true
+
 
   deploy-api:
     name: Deploy API to Render
